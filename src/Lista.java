@@ -4,14 +4,12 @@ public class Lista <T> implements Iterable <T> {
     private T [] lista;
     private int aktualnyRozmiar;
 
-    public Lista(T[] lista) {
-        this.lista = lista;
-    }
-
-    public Lista (int rozmiar){
+    public Lista(int rozmiar) {
         this.lista = (T[]) new Object [rozmiar];
         aktualnyRozmiar = rozmiar;
+
     }
+
 
     public int size(){
         return aktualnyRozmiar;
@@ -22,18 +20,28 @@ public class Lista <T> implements Iterable <T> {
     }
 
     public boolean contains (Object o){ // equals musialabym przeslonic w konkretnych klasach, ktore chce sprawdzic czy sa rowne
-        if(isEmpty()) return false;
+        /*if(isEmpty()) return false;
         for(int i=0; i<lista.length; i++){
             if(lista[i].equals(o)) return true;
+        }
+        return false;
+        */
+        while(iterator().hasNext()){
+            if(iterator().next().equals(o)) return true;
         }
         return false;
     }
 
     public int indexOf (Object o){
         if(!contains(o)) return -1;
-        else{
+        else{/*
             for(int i=0; i<lista.length; i++){
                 if(lista[i].equals(o)) return i;
+            }*/
+            int i=0;
+            while(iterator().hasNext()){
+                if(iterator().next().equals(o)) return i;
+                i++;
             }
         }
         return -1;
@@ -112,11 +120,14 @@ public class Lista <T> implements Iterable <T> {
         this.lista =  (T[] )new Object [0];
     }
 
-@Override
+    @Override
     public Iterator<T> iterator(){
+        Iterator<T> iterator = new Iterator<T>() {
+            public int aktualnyIndeks = 0;
 
-        Iterator <T> iterator = new Iterator <T>() {
-            private int aktualnyIndeks = 0;
+            public int getAktualnyIndeks(){
+                return aktualnyIndeks;
+            }
 
             @Override
             public boolean hasNext() {
@@ -137,8 +148,9 @@ public class Lista <T> implements Iterable <T> {
                 Lista.this.remove(aktualnyIndeks);
             }
         };
+        return  iterator;
+    }
 
-    return iterator;
-        }
+
 }
 
