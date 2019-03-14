@@ -6,10 +6,10 @@ public class Lista <T> implements Iterable <T> {
 
     public Lista(int rozmiar) {
         this.lista = (T[]) new Object [rozmiar];
-        aktualnyRozmiar = rozmiar;
-
+        aktualnyRozmiar = 0;
     }
 
+    public int ileAktualnieZmiesci () {return lista.length;}
 
     public int size(){
         return aktualnyRozmiar;
@@ -19,28 +19,30 @@ public class Lista <T> implements Iterable <T> {
         return (aktualnyRozmiar==0);
     }
 
-    public boolean contains (Object o){ // equals musialabym przeslonic w konkretnych klasach, ktore chce sprawdzic czy sa rowne
+    public boolean contains (Object o){
+         Iterator<T> iterator = this.iterator();
         /*if(isEmpty()) return false;
         for(int i=0; i<lista.length; i++){
             if(lista[i].equals(o)) return true;
         }
         return false;
         */
-        while(iterator().hasNext()){
-            if(iterator().next().equals(o)) return true;
+        while(iterator.hasNext()){
+            if(iterator.next().equals(o)) return true;
         }
         return false;
     }
 
     public int indexOf (Object o){
+        Iterator<T> iterator = this.iterator();
         if(!contains(o)) return -1;
         else{/*
             for(int i=0; i<lista.length; i++){
                 if(lista[i].equals(o)) return i;
             }*/
             int i=0;
-            while(iterator().hasNext()){
-                if(iterator().next().equals(o)) return i;
+            while(iterator.hasNext()){
+                if(iterator.next().equals(o)) return i;
                 i++;
             }
         }
@@ -69,6 +71,7 @@ public class Lista <T> implements Iterable <T> {
                 nowaLista[i] = lista[i];
             }
             nowaLista[aktualnyRozmiar]=element;
+            lista = nowaLista;
             aktualnyRozmiar++;
         }
         return true;
@@ -90,20 +93,22 @@ public class Lista <T> implements Iterable <T> {
         for(int j=index+1; j<aktualnyRozmiar; j++){
             nowaLista[j]=lista[j-1];
         }
+        lista = nowaLista;
         aktualnyRozmiar++;
     }
 
     public boolean remove (int index){
         if(index>=aktualnyRozmiar) return false;
         else {
-            T [] nowaLista = (T[]) new Object [aktualnyRozmiar];
+            T [] nowaLista = (T[]) new Object [lista.length];
             for(int i=0; i<index; i++){
                 nowaLista[i] = lista[i];
             }
-            for(int j=index; j<aktualnyRozmiar-1; j++){
-                nowaLista[j] = lista[j+1];
+            for(int j=index+1; j<aktualnyRozmiar; j++){
+                nowaLista[j-1] = lista[j];
             }
             aktualnyRozmiar--;
+            lista=nowaLista;
             return true;
         }
     }
@@ -118,16 +123,13 @@ public class Lista <T> implements Iterable <T> {
 
     public void clear (){
         this.lista =  (T[] )new Object [0];
+        aktualnyRozmiar=0;
     }
 
     @Override
     public Iterator<T> iterator(){
         Iterator<T> iterator = new Iterator<T>() {
             public int aktualnyIndeks = 0;
-
-            public int getAktualnyIndeks(){
-                return aktualnyIndeks;
-            }
 
             @Override
             public boolean hasNext() {
@@ -145,7 +147,7 @@ public class Lista <T> implements Iterable <T> {
 
             @Override
             public void remove(){
-                Lista.this.remove(aktualnyIndeks);
+                Lista.this.remove(--aktualnyIndeks);
             }
         };
         return  iterator;
