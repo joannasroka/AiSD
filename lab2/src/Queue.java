@@ -47,6 +47,7 @@ public class Queue<T> implements Iterable<T> {
     public void clear() {
         size = 0;
         head = tail;
+
     }
 
     public int size() {

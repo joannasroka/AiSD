@@ -80,7 +80,6 @@ public class Stack<T> implements Iterable<T> {
         return oldValue;
     }
 
-
     @Override
     public Iterator<T> iterator() {
         return new QSIterator<>(top);

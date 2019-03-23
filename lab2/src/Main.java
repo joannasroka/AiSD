@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        /*
+/*
         Stack <Integer> stack = new Stack<>();
         stack.push(1);
         System.out.println(stack.peek());
@@ -18,8 +18,8 @@ public class Main {
         stack.push(1);
         stack.set(0,2);
         System.out.println(stack.peek());
-        */
-/*
+*/
+
         Queue<Integer> queue = new Queue<>();
 
         System.out.println(queue.isEmpty());
@@ -38,6 +38,6 @@ public class Main {
         queue.enqueue(10);
         System.out.println(queue.peek());
 
-*/
+
     }
 }
