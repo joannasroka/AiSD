@@ -66,7 +66,7 @@ public class Stack<T> implements Iterable<T> {
             if (aux == index) return t;
             aux++;
         }
-        return null;
+         return null;
     }
 
     public T set (int index, T value){
