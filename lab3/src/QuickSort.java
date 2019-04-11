@@ -5,21 +5,25 @@ public class QuickSort {
 
     Random random = new Random();
 
-    public void sort (int [] sequence, int begin, int end) {
-            int div = div(sequence, begin, end);
-            if (begin != div) sort(sequence, begin, div);
-            if ((div + 1) != end) sort(sequence, div + 1, end);
+    public void sort(int[] sequence, int begin, int end) {
+        int div = div(sequence, begin, end);
+        if (begin != div) sort(sequence, begin, div);
+        if ((div + 1) != end) sort(sequence, div + 1, end);
     }
 
-    public int div (int [] sequence, int begin, int end){
-        int pivot = sequence[random.nextInt(end-begin)+begin];
-        int findBigger = begin;
-        int findSmaller = end;
-        while(true){
-            while(sequence[findBigger]<pivot) findBigger++;
-            while(sequence[findSmaller]>pivot) findSmaller--;
+    public int div(int[] sequence, int begin, int end) {
+        int pivot = sequence[random.nextInt(end - begin) + begin];
+        int findBigger = begin - 1;
+        int findSmaller = end + 1;
+        while (true) {
+            do {
+                findBigger++;
+            } while (sequence[findBigger] < pivot);
+            do {
+                findSmaller--;
+            } while (sequence[findSmaller] > pivot);
 
-            if(findBigger>=findSmaller) {
+            if (findBigger >= findSmaller) {
                 return findSmaller;
             }
             int temp = sequence[findBigger];
@@ -29,7 +33,7 @@ public class QuickSort {
     }
 
 
-    public void sort (int [] sequence){
-        sort(sequence,0,sequence.length-1);
+    public void sort(int[] sequence) {
+        sort(sequence, 0, sequence.length - 1);
     }
 }
