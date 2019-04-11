@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 
-public class ShellSort {
+public class ShellSort implements Sort {
+    private int[] gaps;
 
-    public void sort(int [] sequence, int [] gaps){
+    public void sort(int [] sequence){
+        if(gaps == null) throw new IllegalArgumentException("empty gaps");
         for (int gap : gaps) {
             for(int elementIndex=gap; elementIndex<sequence.length; elementIndex++){
                 int valueToInsert = sequence[elementIndex];// bierze kolejne elementy do wstawienia
@@ -16,4 +18,11 @@ public class ShellSort {
         }
     }
 
+    public int[] getGaps() {
+        return gaps;
+    }
+
+    public void setGaps(int[] gaps) {
+        this.gaps = gaps;
+    }
 }

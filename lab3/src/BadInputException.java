@@ -1,4 +1,5 @@
-package PACKAGE_NAME;
-
-public class BadInputException {
+public class BadInputException extends RuntimeException {
+    BadInputException(String message) {
+        super(message);
+    }
 }

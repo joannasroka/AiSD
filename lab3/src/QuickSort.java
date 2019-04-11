@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Random;
 
-public class QuickSort {
+public class QuickSort implements Sort {
 
     Random random = new Random();
 
@@ -32,8 +32,8 @@ public class QuickSort {
         }
     }
 
-
     public void sort(int[] sequence) {
         sort(sequence, 0, sequence.length - 1);
     }
+
 }

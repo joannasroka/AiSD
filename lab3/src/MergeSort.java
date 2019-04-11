@@ -1,4 +1,4 @@
-public class MergeSort {
+public class MergeSort implements Sort {
 
     private void merge(int [] sequence, int left, int middle, int right){
         int begin1=left;

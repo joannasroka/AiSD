@@ -1,17 +1,30 @@
-import com.sun.javafx.image.IntPixelGetter;
+import com.sun.xml.internal.bind.v2.model.annotation.Quick;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+    private static String[] algorithmOptions =
+            {"MENU",
+                    "A = Quicksort",
+                    "B = Shell-sort",
+                    "C = Merge-sort",
+                    "E = wyjdz z programu",
+                    "Wybieram: "};
+    private static String[] dataTypeOptions = {
+            "Typ posortowania ciagu testowego:",
+            "A = W pelni losowy",
+            "B = posortowany w 50%",
+            "C = w pelni posortowany",
+            "D = posortowany odwrotnie",
+            "Wybieram: "};
 
-    public static int []gaps1 (int size){
-        int [] gaps = new int [size/10];
-        for(int i=size/2; i)
-    }
-
-
+    private static String[] dataCountOptions = {"Ilosc danych: ",
+            "A = 100 tysiecy",
+            "B = 500 tysiecy",
+            "C = 1 milion",
+            "D = 2 miliony",
+            "Wybieram: "};
 
     public static int[] random(int size) {
         Random rand = new Random();
@@ -55,418 +68,122 @@ public class Main {
         return result;
     }
 
+    static String askUserFor(String[] options, Scanner scanner) {
+        for (String option : options) {
+            System.out.println(option);
+        }
+        return scanner.next().toUpperCase();
+    }
 
-    public static void main(String[] args) {
+    static Sort chooseSort(String userInput) {
+        Sort chosenSort;
+        switch (userInput) {
+            case "A":
+                chosenSort = new QuickSort();
+                break;
+            case "B":
+                chosenSort = new ShellSort();
+                break;
+            case "C":
+                chosenSort = new MergeSort();
+                break;
+            case "E":
+                return null;
+            default:
+                throw new BadInputException("Zle dane podczas wybierania algorytmu");
+        }
+        return chosenSort;
+    }
 
-        QuickSort quickSort = new QuickSort();
-        MergeSort mergeSort = new MergeSort();
-        ShellSort shellSort = new ShellSort();
+    static int chooseDataCount(String userInput) {
+        int dataCount;
+        switch (userInput) {
+            case "A":
+                dataCount = 100000;
+                break;
+            case "B":
+                dataCount = 500000;
+                break;
+            case "C":
+                dataCount = 1000000;
+                break;
+            case "D":
+                dataCount = 2000000;
+                break;
+            default:
+                throw new BadInputException("Zle dane podczas wybierania rozmiaru danych");
+        }
+        return dataCount;
+    }
 
-        long before;
-        long after;
-        long elapsed;
-
+    static int[] chooseDataSet(String userInput, int dataCount) {
         int[] data;
-        int [] gaps1;
-        int [] gaps2;
+        switch (userInput) {
+            case "A":
+                data = random(dataCount);
+                break;
+            case "B":
+                data = halfSorted(dataCount);
+                break;
+            case "C":
+                data = sorted(dataCount);
+                break;
+            case "D":
+                data = sortedReverse(dataCount);
+                break;
+            default:
+                throw new BadInputException("Zle dane podczas wybierania typu danych");
+        }
+        return data;
+    }
 
+    static double performExperiment(Sort sort, int[] data) {
+        long before = System.nanoTime();
+        sort.sort(data);
+        long after = System.nanoTime();
+        return (double) (after - before) / 1_000_000_000;
+    }
+
+    static double[] performExperiment(Sort sort, int dataCount, String dataType, int experimentsCount) {
+        double[] results = new double[experimentsCount];
+        for (int i = 0; i < experimentsCount; i++) {
+            int[] data = chooseDataSet(dataType, dataCount);
+            results[i] = performExperiment(sort, data);
+        }
+        return results;
+    }
+
+    static void runInterface() {
         Scanner scanner = new Scanner(System.in);
-        String answer;
-        boolean program = true;
-        while (program) {
-            System.out.println("MENU");
-            System.out.println("A = Quicksort");
-            System.out.println("B = Shell-sort");
-            System.out.println("C = Merge-sort");
-            System.out.println("E = wyjdz z programu");
-            System.out.println("Wybieram: ");
-            answer = scanner.next().toUpperCase();
-            switch (answer) {
-                case "A":
-                    System.out.println("Typ posortowania ciagu testowego:");
-                    System.out.println("A = W pelni losowy");
-                    System.out.println("B = posortowany w 50%");
-                    System.out.println("C = w pelni posortowany");
-                    System.out.println("D = posortowany odwrotnie");
-                    System.out.println("Wybieram: ");
-                    answer = scanner.next().toUpperCase();
-                    switch (answer) {
-                        case "A":
-                            System.out.println("Ilosc danych: ");
-                            System.out.println("A = 100 tysiecy");
-                            System.out.println("B = 500 tysiecy");
-                            System.out.println("C = 1 milion");
-                            System.out.println("D = 2 miliony");
-                            System.out.println("Wybieram: ");
-                            answer = scanner.next().toUpperCase();
-                            switch (answer) {
-                                case "A":
-                                    data = random(100000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "B":
-                                    data = random(500000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
+        while (true) {
+            try {
+                String algorithmTypeInput = askUserFor(algorithmOptions, scanner);
+                if (algorithmTypeInput.equals("E")) break;
+                Sort chosenSort = chooseSort(algorithmTypeInput);
 
-                                    break;
-                                case "C":
-                                    data = random(1000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "D":
-                                    data = random(2000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                default:
-                                    System.out.println("Nieprawidlowa odpowiedz.");
-                                    break;
-                            }
-                            break;
-                        case "B":
-                            System.out.println("Ilosc danych: ");
-                            System.out.println("A = 100 tysiecy");
-                            System.out.println("B = 500 tysiecy");
-                            System.out.println("C = 1 milion");
-                            System.out.println("D = 2 miliony");
-                            System.out.println("Wybieram: ");
-                            answer = scanner.next().toUpperCase();
-                            switch (answer) {
-                                case "A":
-                                    data = halfSorted(100000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "B":
-                                    data = halfSorted(500000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
+                String dataCountInput = askUserFor(dataCountOptions, scanner);
+                int dataCount = chooseDataCount(dataCountInput);
 
-                                    break;
-                                case "C":
-                                    data = halfSorted(1000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "D":
-                                    data = halfSorted(2000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                default:
-                                    System.out.println("Nieprawidlowa odpowiedz.");
-                                    break;
-                            }
-                            break;
-                        case "C":
-                            System.out.println("Ilosc danych: ");
-                            System.out.println("A = 100 tysiecy");
-                            System.out.println("B = 500 tysiecy");
-                            System.out.println("C = 1 milion");
-                            System.out.println("D = 2 miliony");
-                            System.out.println("Wybieram: ");
-                            answer = scanner.next().toUpperCase();
-                            switch (answer) {
-                                case "A":
-                                    data = sorted(100000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "B":
-                                    data = sorted(500000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
+                String dataTypeInput = askUserFor(dataTypeOptions, scanner);
+                int[] data = chooseDataSet(dataTypeInput, dataCount);
 
-                                    break;
-                                case "C":
-                                    data = sorted(1000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "D":
-                                    data = sorted(2000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                default:
-                                    System.out.println("Nieprawidlowa odpowiedz.");
-                                    break;
-                            }
-                            break;
-                        case "D":
-                            System.out.println("Ilosc danych: ");
-                            System.out.println("A = 100 tysiecy");
-                            System.out.println("B = 500 tysiecy");
-                            System.out.println("C = 1 milion");
-                            System.out.println("D = 2 miliony");
-                            System.out.println("Wybieram: ");
-                            answer = scanner.next().toUpperCase();
-                            switch (answer) {
-                                case "A":
-                                    data = sortedReverse(100000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "B":
-                                    data = sortedReverse(500000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
+                double elapsed = performExperiment(chosenSort, data);
 
-                                    break;
-                                case "C":
-                                    data = sortedReverse(1000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "D":
-                                    data = sortedReverse(2000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                default:
-                                    System.out.println("Nieprawidlowa odpowiedz.");
-                                    break;
-                            }
-                            break;
-                        case "E":
-                            program = false;
-                            break;
-                        default:
-                            break;
-                    }
-                case "B": {
-                    System.out.println("Typ posortowania ciagu testowego:");
-                    System.out.println("A = W pelni losowy");
-                    System.out.println("B = posortowany w 50%");
-                    System.out.println("C = w pelni posortowany");
-                    System.out.println("D = posortowany odwrotnie");
-                    System.out.println("Wybieram: ");
-                    answer = scanner.next().toUpperCase();
-                    switch (answer) {
-                        case "A":
-                            System.out.println("Ilosc danych: ");
-                            System.out.println("A = 100 tysiecy");
-                            System.out.println("B = 500 tysiecy");
-                            System.out.println("C = 1 milion");
-                            System.out.println("D = 2 miliony");
-                            System.out.println("Wybieram: ");
-                            answer = scanner.next().toUpperCase();
-                            switch (answer) {
-                                case "A":
-                                    data = random(100000);
-                                    before = System.nanoTime();
-                                    shellSort.sort(data,);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "B":
-                                    data = random(500000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-
-                                    break;
-                                case "C":
-                                    data = random(1000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "D":
-                                    data = random(2000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                default:
-                                    System.out.println("Nieprawidlowa odpowiedz.");
-                                    break;
-                            }
-                            break;
-                        case "B":
-                            System.out.println("Ilosc danych: ");
-                            System.out.println("A = 100 tysiecy");
-                            System.out.println("B = 500 tysiecy");
-                            System.out.println("C = 1 milion");
-                            System.out.println("D = 2 miliony");
-                            System.out.println("Wybieram: ");
-                            answer = scanner.next().toUpperCase();
-                            switch (answer) {
-                                case "A":
-                                    data = halfSorted(100000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "B":
-                                    data = halfSorted(500000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-
-                                    break;
-                                case "C":
-                                    data = halfSorted(1000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "D":
-                                    data = halfSorted(2000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                default:
-                                    System.out.println("Nieprawidlowa odpowiedz.");
-                                    break;
-                            }
-                            break;
-                        case "C":
-                            System.out.println("Ilosc danych: ");
-                            System.out.println("A = 100 tysiecy");
-                            System.out.println("B = 500 tysiecy");
-                            System.out.println("C = 1 milion");
-                            System.out.println("D = 2 miliony");
-                            System.out.println("Wybieram: ");
-                            answer = scanner.next().toUpperCase();
-                            switch (answer) {
-                                case "A":
-                                    data = sorted(100000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "B":
-                                    data = sorted(500000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-
-                                    break;
-                                case "C":
-                                    data = sorted(1000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "D":
-                                    data = sorted(2000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                default:
-                                    System.out.println("Nieprawidlowa odpowiedz.");
-                                    break;
-                            }
-                            break;
-                        case "D":
-                            System.out.println("Ilosc danych: ");
-                            System.out.println("A = 100 tysiecy");
-                            System.out.println("B = 500 tysiecy");
-                            System.out.println("C = 1 milion");
-                            System.out.println("D = 2 miliony");
-                            System.out.println("Wybieram: ");
-                            answer = scanner.next().toUpperCase();
-                            switch (answer) {
-                                case "A":
-                                    data = sortedReverse(100000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "B":
-                                    data = sortedReverse(500000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-
-                                    break;
-                                case "C":
-                                    data = sortedReverse(1000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                case "D":
-                                    data = sortedReverse(2000000);
-                                    before = System.nanoTime();
-                                    quickSort.sort(data);
-                                    after = System.nanoTime();
-                                    elapsed = after - before;
-                                    break;
-                                default:
-                                    System.out.println("Nieprawidlowa odpowiedz.");
-                                    break;
-                            }
-                            break;
-                        case "E":
-                            program = false;
-                            break;
-                        default:
-                            break;
-
-                    break;
-                    case "C":
-                        break;
-                    case "E":
-                        program = false;
-                        break;
-                    default:
-                        System.out.println("Bledna odpowiedz.");
-                        break;
-                }
+                System.out.println("Sortowanie trwalo " + elapsed + " sekund");
+            } catch (BadInputException e) {
+                System.out.println(e.getMessage());
             }
-
         }
     }
+
+
+    public static void main(String[] args) {
+        runInterface();
+        /*
+        double[] results = performExperiment(new QuickSort(), 100_000, "A", 100);
+        for (int i = 0; i < results.length; i++) {
+            System.out.println("Experiment" + i + ": " + results[i] + " seconds");
+        }
+         */
+    }
+}

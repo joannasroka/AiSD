@@ -1,4 +1,3 @@
-package PACKAGE_NAME;
-
 public interface Sort {
+    void sort(int[] sequence);
 }
