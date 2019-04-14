@@ -183,6 +183,7 @@ public class Main {
             for (int i = 0; i < random100k.length; i++) {
                 results[i] = performExperiment(sort, random100k[i]);
             }
+            System.out.println(sort + inPath + "random complete");
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
                 writer.write(sorts + ": " + Arrays.toString(results));
             } catch (IOException e){e.printStackTrace();}
@@ -196,6 +197,7 @@ public class Main {
             for (int i = 0; i < random100k.length; i++) {
                 results[i] = performExperiment(sort, random100k[i]);
             }
+            System.out.println(sort + inPath + "sorted complete");
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
                 writer.write(sorts + ": " + Arrays.toString(results));
             } catch (IOException e){e.printStackTrace();}
@@ -209,6 +211,7 @@ public class Main {
             for (int i = 0; i < random100k.length; i++) {
                 results[i] = performExperiment(sort, random100k[i]);
             }
+            System.out.println(sort + inPath + "halfSorted complete");
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
                 writer.write(sorts + ": " + Arrays.toString(results));
             } catch (IOException e){e.printStackTrace();}
@@ -222,6 +225,7 @@ public class Main {
             for (int i = 0; i < random100k.length; i++) {
                 results[i] = performExperiment(sort, random100k[i]);
             }
+            System.out.println(sort + inPath + "reverseSorted complete");
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
                 writer.write(sorts + ": " + Arrays.toString(results));
             } catch (IOException e){e.printStackTrace();}
