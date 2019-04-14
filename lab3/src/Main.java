@@ -1,5 +1,7 @@
 import com.sun.xml.internal.bind.v2.model.annotation.Quick;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -25,48 +27,6 @@ public class Main {
             "C = 1 milion",
             "D = 2 miliony",
             "Wybieram: "};
-
-    public static int[] random(int size) {
-        Random rand = new Random();
-        int[] result = new int[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = rand.nextInt(1000000);
-        }
-        return result;
-    }
-
-    public static int[] halfSorted(int size) {
-        Random rand = new Random();
-        int[] result = new int[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = rand.nextInt(1000000);
-        }
-        QuickSort quickSort = new QuickSort();
-        quickSort.sort(result, size / 2, size - 1);
-        return result;
-    }
-
-    public static int[] sorted(int size) {
-        Random rand = new Random();
-        int[] result = new int[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = rand.nextInt(1000000);
-        }
-        QuickSort quickSort = new QuickSort();
-        quickSort.sort(result);
-        return result;
-    }
-
-    public static int[] sortedReverse(int size) {
-        Random rand = new Random();
-        int[] result = new int[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = rand.nextInt(1000000);
-        }
-        QuickSort quickSort = new QuickSort();
-        quickSort.sort(result, size - 1, 0);//??????????????????
-        return result;
-    }
 
     static String askUserFor(String[] options, Scanner scanner) {
         for (String option : options) {
@@ -120,16 +80,16 @@ public class Main {
         int[] data;
         switch (userInput) {
             case "A":
-                data = random(dataCount);
+                data = DataGenerator.random(dataCount);
                 break;
             case "B":
-                data = halfSorted(dataCount);
+                data = DataGenerator.halfSorted(dataCount);
                 break;
             case "C":
-                data = sorted(dataCount);
+                data = DataGenerator.sorted(dataCount);
                 break;
             case "D":
-                data = sortedReverse(dataCount);
+                data = DataGenerator.sortedReverse(dataCount);
                 break;
             default:
                 throw new BadInputException("Zle dane podczas wybierania typu danych");
@@ -178,9 +138,12 @@ public class Main {
 
 
     public static void main(String[] args) {
+
+
         //runInterface();
 
-        double[] results = performExperiment(new MergeSort(), 100000, "A", 100);
+
+        double[] results = performExperiment(new MergeSort(), 100_000, "A", 100);
         for (int i = 0; i < results.length; i++) {
             System.out.println(results[i]);
         }
