@@ -1,9 +1,5 @@
-import com.sun.xml.internal.bind.v2.model.annotation.Quick;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Random;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     private static String[] algorithmOptions =
@@ -136,17 +132,140 @@ public class Main {
         }
     }
 
+    public static int[][] loadSequencesFromPath(String path, int arrays) {
+        int[][] result = new int[arrays][];
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(path)))) {
+            for (int i = 0; i < arrays; i++) {
+                String line = bufferedReader.readLine();
+                String[] splitLine = line.split(" ");
+                int[] array = new int[splitLine.length];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = Integer.valueOf(splitLine[j]);
+                }
+                result[i] = array;
+            }
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new RuntimeException();
+    }
+
+    public static int[][] loadSequencesFromPathSorted(String path, int arrays) {
+        int [][] result = loadSequencesFromPath(path, arrays);
+        for (int[] ints : result) {
+            DataGenerator.sorted(ints);
+        }
+        return result;
+    }
+
+    public static int[][] loadSequencesFromPathHalfSorted(String path, int arrays) {
+        int [][] result = loadSequencesFromPath(path, arrays);
+        for (int[] ints : result) {
+            DataGenerator.halfSorted(ints);
+        }
+        return result;
+    }
+
+    public static int[][] loadSequencesFromPathReverseSorted(String path, int arrays) {
+        int [][] result = loadSequencesFromPath(path, arrays);
+        for (int[] ints : result) {
+            DataGenerator.sortedReverse(ints);
+        }
+        return result;
+    }
+
+
+    public static void performExperimentAndSaveRandom(Sort[] sorts, String inPath, String outPath, int arrays) {
+        for (Sort sort : sorts) {
+            int[][] random100k = loadSequencesFromPath(inPath, arrays);
+            double[] results = new double[random100k.length];
+            for (int i = 0; i < random100k.length; i++) {
+                results[i] = performExperiment(sort, random100k[i]);
+            }
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
+                writer.write(sorts + ": " + Arrays.toString(results));
+            } catch (IOException e){e.printStackTrace();}
+        }
+    }
+
+    public static void performExperimentAndSaveSorted(Sort[] sorts, String inPath, String outPath, int arrays) {
+        for (Sort sort : sorts) {
+            int[][] random100k = loadSequencesFromPathSorted(inPath, arrays);
+            double[] results = new double[random100k.length];
+            for (int i = 0; i < random100k.length; i++) {
+                results[i] = performExperiment(sort, random100k[i]);
+            }
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
+                writer.write(sorts + ": " + Arrays.toString(results));
+            } catch (IOException e){e.printStackTrace();}
+        }
+    }
+
+    public static void performExperimentAndSaveHalfSorted(Sort[] sorts, String inPath, String outPath, int arrays) {
+        for (Sort sort : sorts) {
+            int[][] random100k = loadSequencesFromPathHalfSorted(inPath, arrays);
+            double[] results = new double[random100k.length];
+            for (int i = 0; i < random100k.length; i++) {
+                results[i] = performExperiment(sort, random100k[i]);
+            }
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
+                writer.write(sorts + ": " + Arrays.toString(results));
+            } catch (IOException e){e.printStackTrace();}
+        }
+    }
+
+    public static void performExperimentAndSaveReverseSorted(Sort[] sorts, String inPath, String outPath, int arrays) {
+        for (Sort sort : sorts) {
+            int[][] random100k = loadSequencesFromPathReverseSorted(inPath, arrays);
+            double[] results = new double[random100k.length];
+            for (int i = 0; i < random100k.length; i++) {
+                results[i] = performExperiment(sort, random100k[i]);
+            }
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
+                writer.write(sorts + ": " + Arrays.toString(results));
+            } catch (IOException e){e.printStackTrace();}
+        }
+    }
+
 
     public static void main(String[] args) {
-
-
         //runInterface();
+        ShellSort sedgewick = new ShellSort();
+        sedgewick.setGapsType(ShellSort.Gaps.SEDGEWICK);
+        Sort[] sorts = {new MergeSort(), new QuickSort(), new ShellSort(), sedgewick};
+        String[] files = {"random100k", "random500k", "random1m", "random2m"};
+        String in = "./lab3/sequences/";
+        String out = "./lab3/results/";
 
-
-        double[] results = performExperiment(new MergeSort(), 100_000, "A", 100);
-        for (int i = 0; i < results.length; i++) {
-            System.out.println(results[i]);
+        for (String file : files) {
+            performExperimentAndSaveRandom(
+                    sorts,
+                    in + file,
+                    out + file,
+                    100);
         }
 
+        for (String file : files) {
+            performExperimentAndSaveSorted(
+                    sorts,
+                    in + file,
+                    out + file + "_sorted",
+                    100);
+        }
+        for (String file : files) {
+            performExperimentAndSaveHalfSorted(
+                    sorts,
+                    in + file,
+                    out + file + "_halfSorted",
+                    100);
+        }
+        for (String file : files) {
+            performExperimentAndSaveReverseSorted(
+                    sorts,
+                    in + file,
+                    out + file + "_reverseSorted",
+                    100);
+        }
     }
 }

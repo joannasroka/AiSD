@@ -69,4 +69,9 @@ public class ShellSort implements Sort {
     enum Gaps {
         PAPERNOV, SEDGEWICK
     }
+
+    @Override
+    public String toString() {
+        return "Shell|" + gapsType.toString();
+    }
 }

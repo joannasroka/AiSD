@@ -52,4 +52,8 @@ public class MergeSort implements Sort {
         sort(sequence, 0, sequence.length - 1);
     }
 
+    @Override
+    public String toString() {
+        return "Merge";
+    }
 }
