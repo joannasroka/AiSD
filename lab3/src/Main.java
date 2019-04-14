@@ -178,12 +178,12 @@ public class Main {
 
 
     public static void main(String[] args) {
-        runInterface();
-        /*
-        double[] results = performExperiment(new QuickSort(), 100_000, "A", 100);
+        //runInterface();
+
+        double[] results = performExperiment(new MergeSort(), 100000, "A", 100);
         for (int i = 0; i < results.length; i++) {
-            System.out.println("Experiment" + i + ": " + results[i] + " seconds");
+            System.out.println(results[i]);
         }
-         */
+
     }
 }
