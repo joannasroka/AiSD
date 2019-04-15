@@ -185,7 +185,7 @@ public class Main {
             }
             System.out.println(sort + inPath + "random complete");
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
-                writer.write(sorts + ": " + Arrays.toString(results));
+                writer.write(sort + ": " + Arrays.toString(results));
             } catch (IOException e){e.printStackTrace();}
         }
     }
@@ -199,7 +199,7 @@ public class Main {
             }
             System.out.println(sort + inPath + "sorted complete");
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
-                writer.write(sorts + ": " + Arrays.toString(results));
+                writer.write(sort + ": " + Arrays.toString(results));
             } catch (IOException e){e.printStackTrace();}
         }
     }
@@ -213,7 +213,7 @@ public class Main {
             }
             System.out.println(sort + inPath + "halfSorted complete");
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
-                writer.write(sorts + ": " + Arrays.toString(results));
+                writer.write(sort + ": " + Arrays.toString(results));
             } catch (IOException e){e.printStackTrace();}
         }
     }
@@ -227,7 +227,7 @@ public class Main {
             }
             System.out.println(sort + inPath + "reverseSorted complete");
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
-                writer.write(sorts + ": " + Arrays.toString(results));
+                writer.write(sort + ": " + Arrays.toString(results));
             } catch (IOException e){e.printStackTrace();}
         }
     }
