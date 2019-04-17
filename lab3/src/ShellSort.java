@@ -72,6 +72,13 @@ public class ShellSort implements Sort {
             k += 1;
             biggestGap = (int) (Math.pow(4, k) + 3 * Math.pow(2, k - 1) + 1);
         }
+        gaps.sort(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2-o1;
+            }
+        });
+
         int[] result = new int[gaps.size()];
         for (int i = 0; i < result.length; i++) {
             result[i] = gaps.get(i);
