@@ -6,7 +6,7 @@ public class QuickSort implements Sort {
     Random random = new Random();
 
     public void sort(int[] sequence, int begin, int end) {
-        int div = div(sequence, begin, end);
+        int div = div(sequence, begin, end);//miejsce, gdzie skonczyl sortowac
         if (begin != div) sort(sequence, begin, div);
         if ((div + 1) != end) sort(sequence, div + 1, end);
     }
@@ -25,10 +25,12 @@ public class QuickSort implements Sort {
 
             if (findBigger >= findSmaller) {
                 return findSmaller;
-            }
+            }//zwraca poczatek prawej podtablicy
+
             int temp = sequence[findBigger];
             sequence[findBigger] = sequence[findSmaller];
             sequence[findSmaller] = temp;
+            //zamiana wartosci, ktore stoja po zlych stronach
         }
     }
 

@@ -9,6 +9,7 @@ public class Main {
                     "C = Merge-sort",
                     "E = wyjdz z programu",
                     "Wybieram: "};
+
     private static String[] dataTypeOptions = {
             "Typ posortowania ciagu testowego:",
             "A = W pelni losowy",
@@ -72,7 +73,7 @@ public class Main {
         return dataCount;
     }
 
-    static int[] chooseDataSet(String userInput, int dataCount) {
+    static int[] chooseDataType(String userInput, int dataCount) {
         int[] data;
         switch (userInput) {
             case "A":
@@ -103,7 +104,7 @@ public class Main {
     static double[] performExperiment(Sort sort, int dataCount, String dataType, int experimentsCount) {
         double[] results = new double[experimentsCount];
         for (int i = 0; i < experimentsCount; i++) {
-            int[] data = chooseDataSet(dataType, dataCount);
+            int[] data = chooseDataType(dataType, dataCount);
             results[i] = performExperiment(sort, data);
         }
         return results;
@@ -121,7 +122,7 @@ public class Main {
                 int dataCount = chooseDataCount(dataCountInput);
 
                 String dataTypeInput = askUserFor(dataTypeOptions, scanner);
-                int[] data = chooseDataSet(dataTypeInput, dataCount);
+                int[] data = chooseDataType(dataTypeInput, dataCount);
 
                 double elapsed = performExperiment(chosenSort, data);
 
@@ -152,7 +153,7 @@ public class Main {
     }
 
     public static int[][] loadSequencesFromPathSorted(String path, int arrays) {
-        int [][] result = loadSequencesFromPath(path, arrays);
+        int[][] result = loadSequencesFromPath(path, arrays);
         for (int[] ints : result) {
             DataGenerator.sorted(ints);
         }
@@ -160,7 +161,7 @@ public class Main {
     }
 
     public static int[][] loadSequencesFromPathHalfSorted(String path, int arrays) {
-        int [][] result = loadSequencesFromPath(path, arrays);
+        int[][] result = loadSequencesFromPath(path, arrays);
         for (int[] ints : result) {
             DataGenerator.halfSorted(ints);
         }
@@ -168,7 +169,7 @@ public class Main {
     }
 
     public static int[][] loadSequencesFromPathReverseSorted(String path, int arrays) {
-        int [][] result = loadSequencesFromPath(path, arrays);
+        int[][] result = loadSequencesFromPath(path, arrays);
         for (int[] ints : result) {
             DataGenerator.sortedReverse(ints);
         }
@@ -178,63 +179,72 @@ public class Main {
 
     public static void performExperimentAndSaveRandom(Sort[] sorts, String inPath, String outPath, int arrays) {
         for (Sort sort : sorts) {
-            int[][] random100k = loadSequencesFromPath(inPath, arrays);
-            double[] results = new double[random100k.length];
-            for (int i = 0; i < random100k.length; i++) {
-                results[i] = performExperiment(sort, random100k[i]);
+            int[][] random = loadSequencesFromPath(inPath, arrays);
+            double[] results = new double[random.length];
+            for (int i = 0; i < random.length; i++) {
+                results[i] = performExperiment(sort, random[i]);
             }
             System.out.println(sort + inPath + "random complete");
-            try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
                 writer.write(sort + ": " + Arrays.toString(results));
-            } catch (IOException e){e.printStackTrace();}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static void performExperimentAndSaveSorted(Sort[] sorts, String inPath, String outPath, int arrays) {
         for (Sort sort : sorts) {
-            int[][] random100k = loadSequencesFromPathSorted(inPath, arrays);
-            double[] results = new double[random100k.length];
-            for (int i = 0; i < random100k.length; i++) {
-                results[i] = performExperiment(sort, random100k[i]);
+            int[][] random = loadSequencesFromPathSorted(inPath, arrays);
+            double[] results = new double[random.length];
+            for (int i = 0; i < random.length; i++) {
+                results[i] = performExperiment(sort, random[i]);
             }
             System.out.println(sort + inPath + "sorted complete");
-            try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
                 writer.write(sort + ": " + Arrays.toString(results));
-            } catch (IOException e){e.printStackTrace();}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static void performExperimentAndSaveHalfSorted(Sort[] sorts, String inPath, String outPath, int arrays) {
         for (Sort sort : sorts) {
-            int[][] random100k = loadSequencesFromPathHalfSorted(inPath, arrays);
-            double[] results = new double[random100k.length];
-            for (int i = 0; i < random100k.length; i++) {
-                results[i] = performExperiment(sort, random100k[i]);
+            int[][] random = loadSequencesFromPathHalfSorted(inPath, arrays);
+            double[] results = new double[random.length];
+            for (int i = 0; i < random.length; i++) {
+                results[i] = performExperiment(sort, random[i]);
             }
             System.out.println(sort + inPath + "halfSorted complete");
-            try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
                 writer.write(sort + ": " + Arrays.toString(results));
-            } catch (IOException e){e.printStackTrace();}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static void performExperimentAndSaveReverseSorted(Sort[] sorts, String inPath, String outPath, int arrays) {
         for (Sort sort : sorts) {
-            int[][] random100k = loadSequencesFromPathReverseSorted(inPath, arrays);
-            double[] results = new double[random100k.length];
-            for (int i = 0; i < random100k.length; i++) {
-                results[i] = performExperiment(sort, random100k[i]);
+            int[][] random = loadSequencesFromPathReverseSorted(inPath, arrays);
+            double[] results = new double[random.length];
+            for (int i = 0; i < random.length; i++) {
+                results[i] = performExperiment(sort, random[i]);
             }
             System.out.println(sort + inPath + "reverseSorted complete");
-            try(BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
                 writer.write(sort + ": " + Arrays.toString(results));
-            } catch (IOException e){e.printStackTrace();}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     public static void main(String[] args) {
-        //runInterface();
+        runInterface();
+/*
         ShellSort sedgewick = new ShellSort();
         sedgewick.setGapsType(ShellSort.Gaps.SEDGEWICK);
         Sort[] sorts = {new MergeSort(), new QuickSort(), new ShellSort(), sedgewick};
@@ -243,7 +253,7 @@ public class Main {
         String out = "./lab3/results/";
 
         for (String file : files) {
-            performExperimentAndSaveRandom(
+             performExperimentAndSaveRandom(
                     sorts,
                     in + file,
                     out + file,
@@ -271,5 +281,6 @@ public class Main {
                     out + file + "_reverseSorted",
                     100);
         }
+*/
     }
 }

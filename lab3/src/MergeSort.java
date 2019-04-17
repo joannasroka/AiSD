@@ -17,7 +17,7 @@ public class MergeSort implements Sort {
                 begin2++;
             }
 
-        }
+        }//dopisuje pozostala reszte jednej z tablic, gdy druga sie skonczy
         if (begin1 == middle + 1) {
             while (begin2 <= right) {
                 temp[tempIndex] = sequence[begin2];
@@ -32,6 +32,7 @@ public class MergeSort implements Sort {
                 begin1++;
             }
         }
+        //wpisuje posortowana czesc tablicy, zaczynam od miejsca, w ktorym zaczelam sortowac
         for (int i = 0; i < temp.length; i++) {
             sequence[i+left] = temp[i];
         }
@@ -42,7 +43,7 @@ public class MergeSort implements Sort {
             int middle = (left + right) / 2;
             sort(sequence, left, middle);
             sort(sequence, middle + 1, right);
-
+            //dzieli tak dlugo az dojdzie do jednoelementowych tablic i zaczyna je laczyc
             merge(sequence, left, middle, right);
 
         }

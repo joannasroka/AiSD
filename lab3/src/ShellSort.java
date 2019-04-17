@@ -1,21 +1,25 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class ShellSort implements Sort {
-    private Gaps gapsType;
+    private Gaps gapsType = null;
 
-    public void sort(int [] sequence){
-        if(gapsType == null) setGapsType(Gaps.PAPERNOV);
+    public void sort(int[] sequence) {
+        if (gapsType == null) setGapsType(Gaps.PAPERNOV);
 
         int[] gaps = getGaps(sequence.length);
         for (int gap : gaps) {
-            for(int elementIndex=gap; elementIndex<sequence.length; elementIndex++){
+            for (int elementIndex = gap; elementIndex < sequence.length; elementIndex++) {
                 int valueToInsert = sequence[elementIndex];// bierze kolejne elementy do wstawienia
-                int insertIndex=elementIndex; // szuka miejsca do wstawienia
-                while(insertIndex>=gap && sequence[insertIndex-gap]>valueToInsert){
-                    sequence[insertIndex]=sequence[insertIndex-gap];
-                    insertIndex-=gap;
+                int insertIndex = elementIndex; // szuka miejsca do wstawienia
+
+                //bierze z prawej i przeskakuje o kolejne odstepy w lewo i zamienia, jesli po lewej jest wiekszy
+                while (insertIndex >= gap && sequence[insertIndex - gap] > valueToInsert) {
+                    sequence[insertIndex] = sequence[insertIndex - gap];
+                    insertIndex -= gap;
                 }
-                sequence[insertIndex]=valueToInsert;
+
+                sequence[insertIndex] = valueToInsert;
             }
         }
     }
@@ -29,26 +33,36 @@ public class ShellSort implements Sort {
     }
 
     private int[] getGaps(int length) {
-        if(gapsType.equals(Gaps.PAPERNOV)) return papernov(length);
+        if (gapsType.equals(Gaps.PAPERNOV)) return papernov(length);
         else return sedgewick(length);
     }
 
+    //2^k + 1, na poczatku 1
     int[] papernov(int length) {
         ArrayList<Integer> gaps = new ArrayList<>();
         int biggestGap = 1;
         int k = 1;
-        while (biggestGap < length) {
+        while (biggestGap < length) { // zeby nie przeskoczylo
             gaps.add(biggestGap);
             k *= 2;
             biggestGap = 1 + k;
         }
         int[] result = new int[gaps.size()];
+        //bo musi byc posortowane odwrotnie
+        gaps.sort(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2-o1;
+            }
+        });
+
         for (int i = 0; i < result.length; i++) {
             result[i] = gaps.get(i);
         }
         return result;
     }
 
+    //4^k + 3*2^(k-1) + 1, na poczatku 1
     private int[] sedgewick(int length) {
         ArrayList<Integer> gaps = new ArrayList<>();
         int biggestGap = 1;
