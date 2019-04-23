@@ -186,7 +186,6 @@ public class Main {
             }
             System.out.println(sort + inPath + "random complete");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
-                writer.write("\n");
                 writer.write(sort + ": " + Arrays.toString(results));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -203,7 +202,6 @@ public class Main {
             }
             System.out.println(sort + inPath + "sorted complete");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
-                writer.write("\n");
                 writer.write(sort + ": " + Arrays.toString(results));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -220,7 +218,6 @@ public class Main {
             }
             System.out.println(sort + inPath + "halfSorted complete");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
-                writer.write("\n");
                 writer.write(sort + ": " + Arrays.toString(results));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -237,7 +234,6 @@ public class Main {
             }
             System.out.println(sort + inPath + "reverseSorted complete");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outPath), true))) {
-                writer.write("\n");
                 writer.write(sort + ": " + Arrays.toString(results));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -247,11 +243,12 @@ public class Main {
 
 
     public static void main(String[] args) {
-        //runInterface();
-
+        runInterface();
+/*
+// kod ponizej nie zadziala, poniewaz usunelam pliki z poczatkowymi ciagami, gdyz wazyly ponad 2GB
         ShellSort sedgewick = new ShellSort();
         sedgewick.setGapsType(ShellSort.Gaps.SEDGEWICK);
-        Sort[] sorts = {new ShellSort(), sedgewick};
+        Sort[] sorts = {new MergeSort(), new QuickSort(), new ShellSort(), sedgewick};
         String[] files = {"random100k", "random500k", "random1m", "random2m"};
         String in = "./lab3/sequences/";
         String out = "./lab3/results/";
@@ -285,6 +282,6 @@ public class Main {
                     out + file + "_reverseSorted",
                     100);
         }
-
+*/
     }
 }

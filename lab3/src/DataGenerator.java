@@ -70,7 +70,7 @@ public class DataGenerator {
     }
 
     public static void generateSequences() {
-        int[] sizes = {100_000, 500_000, 1_000_000, 2_000_000};
+        int[] sizes = {100_000, 500_000, 1_000_000,  };
         String[] paths = {
                 "./lab3/sequences/random100k",
                 "./lab3/sequences/random500k",
