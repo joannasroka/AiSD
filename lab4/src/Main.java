@@ -29,5 +29,7 @@ public class Main {
         //binaryTree.showInOrder();
         //System.out.println(binaryTree.min());
 
+        System.out.println(binaryTree.subTree(7));
+
     }
 }
