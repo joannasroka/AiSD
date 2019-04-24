@@ -1,2 +1,2 @@
-public class DuplicateElementException extends Exception {
+public class DuplicateElementException extends RuntimeException {
 }
