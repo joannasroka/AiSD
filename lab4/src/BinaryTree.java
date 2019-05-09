@@ -46,7 +46,7 @@ public class BinaryTree {
         } else return find(key, root.getRight());
     }
 
-    private Node find(int key) {
+    public Node find(int key) {
         return find(key, root);
     }
 
@@ -104,8 +104,7 @@ public class BinaryTree {
         if (nodeToRemove.getRight() == null && nodeToRemove.getLeft() == null) {
             if (nodeToRemove.isLeftChild()) nodeToRemove.getParent().setLeft(null);
             else nodeToRemove.getParent().setRight(null);
-        }
-        else if (nodeToRemove.getRight() == null || nodeToRemove.getLeft() == null) cutOut(nodeToRemove);
+        } else if (nodeToRemove.getRight() == null || nodeToRemove.getLeft() == null) cutOut(nodeToRemove);
         else {
             Node next = findNext(key);
             nodeToRemove.setKey(next.getKey());

@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
 public class Node {
-    private Node  left;
-    private Node   right;
+    private Node left;
+    private Node right;
     private Node parent;
     private int key;
     private int id;
 
-    public Node (Node parent, int key, int id){
+    public Node(Node parent, int key, int id) {
         this.parent = parent;
         this.key = key;
         this.id = id;
@@ -21,8 +21,8 @@ public class Node {
         this.parent = parent;
     }
 
-    public boolean isLeftChild(){
-        return(this.getParent().getKey()>this.getKey());
+    public boolean isLeftChild() {
+        return (this.getParent().getKey() > this.getKey());
     }
 
     public Node getLeft() {
