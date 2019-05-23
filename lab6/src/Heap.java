@@ -51,6 +51,11 @@ public class Heap {
         return minTree(head);
     }
 
+    public void insert(Tree tree){
+        Heap newHeap = new Heap(tree);
+        unionHeaps(mergeHeaps(newHeap));
+    }
+
     private Tree minTree (Tree tree){
         int min = Integer.MAX_VALUE;
         Tree minTree = null;
