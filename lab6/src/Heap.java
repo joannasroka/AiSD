@@ -127,7 +127,10 @@ public class Heap {
                 else{
                     if(prevX ==null) result.head = nextX;
                     else {
-                        prevX.getRoot().setSibling(nextX.getRoot()); //??
+                        x.setNext(null);
+                        prevX.setNext(nextX);
+                        x.getRoot().setSibling(nextX.getRoot().getChildren().get(0));
+                        //prevX.getRoot().setSibling(nextX.getRoot()); //??
                     }
                     nextX.merge(x);//?
                     x = x.getNext();
