@@ -74,9 +74,12 @@ public class Heap {
         if(lastInChain == null) {
             result.head = heapToAdd.head;
             lastInChain = result.head;
-        } else lastInChain.setNext(heapToAdd.head);
+        } else {
+            lastInChain.setNext(heapToAdd.head);
+            lastInChain = lastInChain.getNext();
+        }
         heapToAdd.head = heapToAdd.head.getNext();
-        return lastInChain.getNext();
+        return lastInChain;
     }
 
     public Heap mergeHeaps (Heap other){

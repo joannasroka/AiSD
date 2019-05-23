@@ -3,10 +3,13 @@ public class Main {
 
         Tree tree3 =  new Tree(3);
         Tree tree1 = new Tree(1);
+        Tree tree1_2 = new Tree(1);
         Tree tree2 = new Tree(2);
 
         Heap heap1 = new Heap();
         heap1.insert(tree1);
+        heap1.insert(tree1_2);
+
         heap1.print();
 
     }
