@@ -1,8 +1,35 @@
 public class Heap {
     private Tree head;
+    private int size;
 
     public Heap(Tree head) {
         this.head = head;
+    }
+
+    public Heap(){this.head = null;} // konstruktor bez parametru
+
+    public void clear(){
+        head= null;
+    }
+
+    public int size(){
+        if(head==null) return 0;
+        while(head!=null){
+            size+=1;
+            head=head.getNext();
+        }
+        return size;
+    }
+    public boolean isEmpty(){
+        return (head==null);
+    }
+
+    public void print (){
+        if(head==null) return;
+        while(head!=null){
+            head.print();
+            head=head.getNext();
+        }
     }
 
     public Tree minTree (){
