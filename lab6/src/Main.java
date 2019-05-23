@@ -8,9 +8,11 @@ public class Main {
 
         Heap heap1 = new Heap();
         heap1.insert(tree1);
-        heap1.insert(tree1_2);
 
+        heap1.insert(tree1_2);
         heap1.print();
+
+
 
     }
 }

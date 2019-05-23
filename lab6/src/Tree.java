@@ -19,9 +19,9 @@ public class Tree {
         else throw new NullPointerException();
     }
 
-    public void merge(Tree futureChild) {  // zakładamy, że other ma większy klucz niż aktualne drzewo
+    public void merge(Tree futureChild) {  // zakładamy, że futureChild ma większy klucz niż aktualne drzewo
         if (getDegree() != futureChild.getDegree()) throw new IllegalArgumentException();
-        if (root.getKey() < futureChild.root.getKey()) {
+        if (root.getKey() <= futureChild.root.getKey()) {
             root.getChildren().add(futureChild.root);
             root.setDegree(getDegree() + 1);
             futureChild.root.setParent(root);

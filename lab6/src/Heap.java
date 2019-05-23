@@ -104,31 +104,36 @@ public class Heap {
 
     public Heap unionHeaps (Heap result){
         if (result.head== null) return result;
-        Tree prev = null;
-        Tree act = result.head;
-        Tree next = result.head.getNext();
-        while(next!=null){
-            if(act.getDegree()!= next.getDegree() || (next.getNext()!=null && next.getNext().getDegree()==act.getDegree())){
-                prev = act;
-                act = prev.getNext();
-                next = act.getNext();
+        Tree prevX = null;
+        Tree x = result.head;
+        Tree nextX = result.head.getNext();
+        Tree temp;
+        while(nextX!=null){
+            if((x.getDegree()!= nextX.getDegree()) || (nextX.getNext()!=null && nextX.getNext().getDegree()==x.getDegree())){
+                temp = x;
+                prevX = x;
+                x = temp.getNext();
             }
             else
             {
-                if(act.getRoot().getKey()<=next.getRoot().getKey()){
-                    act.getRoot().setSibling(next.getRoot().getSibling());
-                    act.merge(next);
+                if(x.getRoot().getKey()<=nextX.getRoot().getKey()){
+                    //x.getRoot().setSibling(nextX.getRoot().getSibling());
+                    //x.getRoot().getChildren().add(nextX.getRoot());
+                    x.setNext(nextX.getNext());
+                    nextX.setNext(null);
+                    nextX.getRoot().setSibling(x.getRoot().getChildren().get(0));
+                    x.merge(nextX);
                 }
                 else{
-                    if(prev ==null) result.head = next;
+                    if(prevX ==null) result.head = nextX;
                     else {
-                        prev.getRoot().setSibling(next.getRoot());
+                        prevX.getRoot().setSibling(nextX.getRoot()); //??
                     }
-                    act.merge(next);
-                    act = act.getNext();
+                    nextX.merge(x);//?
+                    x = x.getNext();
                 }
             }
-            next = act.getNext();
+            nextX = x.getNext();
         }
         return result;
     }
