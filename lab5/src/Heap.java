@@ -9,10 +9,10 @@ public class Heap {
 
     public Heap() {
         heap = new ArrayList<>();
-        lastIndex = 0;
+        lastIndex = -1; // czyli tyle zmiesci
     }
 
-    public void repairUp(int index) {
+    public void repairUp(int index) { // po dodaniu elementu, idzie w gore
         if (index == 0) return;
         if (heap.get((index - 1) / 2) < heap.get(index)) {
             int temp = heap.get((index - 1) / 2);
@@ -22,7 +22,8 @@ public class Heap {
         }
     }
 
-    public void repairDown(int index) {
+
+    public void repairDown(int index) { // po usunieciu szczytu, idzie w dol
         if (index == lastIndex) return;
         if (index * 2 + 1 > lastIndex) return; // nie ma lewego i prawego
 
@@ -30,6 +31,7 @@ public class Heap {
         int right = heap.get(index*2+2);
 
         if (index * 2 + 2 <= lastIndex) { // ma lewe i prawe
+
 
             if(left>right){
                 if (heap.get(index) < left) {
@@ -76,10 +78,20 @@ public class Heap {
 
     public void remove() throws NoSuchElementException { // usuwa korzen, czyli z najwieksza wartoscia
         if (heap.size() == 0) throw new NoSuchElementException();
+
+        System.out.println(" Usunieto: "  + heap.get(0));
+
         heap.set(0, heap.get(lastIndex));
         heap.remove(lastIndex);
         lastIndex--;
         repairDown(0);
+    }
 
+    public void show (){
+        System.out.println("");
+        for (Integer element :
+                heap) {
+            System.out.print(element+" ");
+        }
     }
 }
