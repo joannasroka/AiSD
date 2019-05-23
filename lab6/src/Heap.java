@@ -12,6 +12,21 @@ public class Heap {
         head= null;
     }
 
+    public void delete(int key){
+        if(isEmpty()) return;
+
+        Tree prev = head;
+
+        while(prev.getNext() !=null) {
+            if (prev.getNext().getRoot().getKey() == key) {
+                prev.setNext(prev.getNext().getNext());
+            }
+            prev = prev.getNext();
+        }
+
+
+    }
+
     public int size(){
         if(head==null) return 0;
         while(head!=null){
