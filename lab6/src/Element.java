@@ -11,16 +11,15 @@ public class Element {
         this.key = key;
         children = new ArrayList<>();
     }
-    public Element (int key, int degree){
+    public Element (int key, int degree, Element parent){
         if(degree<0) throw new IllegalArgumentException();
         this.key = key;
         children = new ArrayList<>();
+        this.parent = parent;
         if(degree>0){
-            children.add (new Element(-(degree-1), degree-1));
-            children.add (new Element(-(degree-1), degree-1));
+            children.add (new Element(-(degree-1), degree-1, this));
+            children.add (new Element(-(degree-1), degree-1,this));
         }
-
-
     }
 
     public int getKey() {

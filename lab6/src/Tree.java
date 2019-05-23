@@ -10,10 +10,11 @@ public class Tree {
 
     public Tree(int degree) {
         if (degree >= 0) {
-            this.root = new Element(-degree, degree);
+            Element element = new Element(-degree, degree, null);
+            this.root = element;
+
         } else throw new IllegalArgumentException();
     }
-
     public int getDegree() {
         if (root != null) return root.getDegree();
         else throw new NullPointerException();
@@ -24,7 +25,7 @@ public class Tree {
         if (root.getKey() <= futureChild.root.getKey()) {
             root.getChildren().add(futureChild.root);
             root.setDegree(getDegree() + 1);
-            futureChild.root.setParent(root);
+            futureChild.getRoot().setParent(root);
         } else throw new IllegalArgumentException("futureChild has bigger key than this");
     }
 
@@ -39,7 +40,7 @@ public class Tree {
     public void print() {
         ArrayList<Element> printList = new ArrayList<>();
         if (isEmpty()) return;
-        printList.add(root);
+        printList.add(root); // najpierw korzen potem dzieci
         while (!printList.isEmpty()) {
            printList.addAll(printList.get(0).getChildren());
             System.out.println(printList.get(0).getKey());
