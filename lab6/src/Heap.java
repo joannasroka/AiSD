@@ -53,7 +53,8 @@ public class Heap {
 
     public void insert(Tree tree){
         Heap newHeap = new Heap(tree);
-        unionHeaps(mergeHeaps(newHeap));
+        Heap heap = unionHeaps(mergeHeaps(newHeap));
+        head = heap.head;
     }
 
     private Tree minTree (Tree tree){
@@ -69,25 +70,31 @@ public class Heap {
         return minTree;
     }
 
+    private Tree addHeapHeadToChain(Heap result, Heap heapToAdd, Tree lastInChain) {
+        if(lastInChain == null) {
+            result.head = heapToAdd.head;
+            lastInChain = result.head;
+        } else lastInChain.setNext(heapToAdd.head);
+        heapToAdd.head = heapToAdd.head.getNext();
+        return lastInChain.getNext();
+    }
+
     public Heap mergeHeaps (Heap other){
         Heap result = new Heap(null);
+        Tree lastInChain = null;
         while(head!=null && other.head!=null){
             if(head.getDegree()<=other.head.getDegree()){
-                result.head.setNext(head); //????
-                head = head.getNext();
+                lastInChain = addHeapHeadToChain(result, this, lastInChain);
             }
             else{
-                result.head.setNext(other.head);
-                other.head = other.head.getNext();
+                lastInChain = addHeapHeadToChain(result, other, lastInChain);
             }
         }
         while (head!=null){
-            result.head.setNext(head); //????
-            head = head.getNext();
+            lastInChain = addHeapHeadToChain(result, this, lastInChain);
         }
         while(other.head!=null){
-            result.head.setNext(other.head);
-            other.head = other.head.getNext();
+            lastInChain = addHeapHeadToChain(result, other, lastInChain);
         }
         return result;
     }
