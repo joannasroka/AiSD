@@ -17,7 +17,11 @@ public class Node implements Comparable <Node> {
 
     @Override
     public int compareTo(Node o) {
-        return this.getCost()-o.getCost();
+        if(this.getCost() == o.getCost()){
+            // ten, który jest bliżej końca ma większy priorytet
+            return (o.getX()+o.getY())-(this.getX()+this.getY());
+        }
+        else return this.getCost()-o.getCost();
     }
 
     public int getCost() {
