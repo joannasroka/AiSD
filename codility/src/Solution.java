@@ -14,8 +14,6 @@ public class Solution {
 
     public int solution(int[][] A) {
 
-        // moze przejsc po tej calej tablicy i dla kazdego wezla stworzyc liste sciezek -> w prawo lub w dol
-        // az do konca tablicy
 
         PriorityQueue<Node> availablePaths = new PriorityQueue<>();
 
@@ -23,12 +21,13 @@ public class Solution {
 
         int x = 0;
         int y = 0;
-        nodeArray[0][0] = new Node(A[0][0], getZeros(A[0][0]), null);
+        nodeArray[0][0] = new Node(0,0,A[0][0], getZeros(A[0][0]), null);
 
         while (x != A.length || y != A[0].length) {
             if (x + 1 < A.length) {
                 if (nodeArray[x + 1][y] == null) {
-                    nodeArray[x + 1][y] = new Node(A[x + 1][y], nodeArray[x][y].getCost() + getZeros(A[x + 1][y]), nodeArray[x][y]);
+                    nodeArray[x + 1][y] = new Node(x+1, y, A[x + 1][y], nodeArray[x][y].getCost() + getZeros(A[x + 1][y]), nodeArray[x][y]);
+                    availablePaths.add(nodeArray[x+1][y]);
                 }
                 else {
                     if((nodeArray[x][y].getCost()+getZeros(A[x+1][y]))<nodeArray[x+1][y].getCost())
@@ -42,7 +41,8 @@ public class Solution {
             }
             if (y + 1 < A[0].length) {
                 if (nodeArray[x][y+1] == null) {
-                    nodeArray[x][y+1] = new Node(A[x][y+1], nodeArray[x][y].getCost() + getZeros(A[x][y+1]), nodeArray[x][y]);
+                    nodeArray[x][y+1] = new Node(x, y+1, A[x][y+1], nodeArray[x][y].getCost() + getZeros(A[x][y+1]), nodeArray[x][y]);
+                    availablePaths.add(nodeArray[x][y+1]);
                 }
                 else {
                     if((nodeArray[x][y].getCost()+getZeros(A[x][y+1]))<nodeArray[x][y+1].getCost())
@@ -54,6 +54,11 @@ public class Solution {
                     }
                 }
             }
+
+            x = availablePaths.peek().getX();
+            y = availablePaths.peek().getY();
+            availablePaths.poll();
+
 
 
         }
