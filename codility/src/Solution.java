@@ -28,6 +28,7 @@ public class Solution {
         availablePaths.add(nodeArray[0][0]);
 
         while (x != A.length - 1 || y != A[0].length - 1) {
+            availablePaths.poll();
             if (x + 1 < A.length) {
                 if (nodeArray[x + 1][y] == null) {
 
@@ -88,7 +89,6 @@ public class Solution {
                     }
                 }
             }
-            availablePaths.poll();
             x = availablePaths.peek().getX();
             y = availablePaths.peek().getY();
 
