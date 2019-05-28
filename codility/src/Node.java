@@ -6,6 +6,7 @@ public class Node implements Comparable <Node> {
     private int value; // wartosc wezla
     private Node lastNode; // ostatni wezel, z którego doszlismy do aktualnego wezla
     private int cost;
+    private boolean wasItZero = false;
 
     public Node(int x, int y, int value, int cost, Node lastNode) {
         this.x=x;
@@ -13,7 +14,18 @@ public class Node implements Comparable <Node> {
         this.value = value;
         this.cost = cost;
         this.lastNode = lastNode;
+        this.wasItZero = false;
     }
+
+    public Node(int x, int y, int value, int cost, Node lastNode, boolean wasItZero) {
+        this.x=x;
+        this.y=y;
+        this.value = value;
+        this.cost = cost;
+        this.lastNode = lastNode;
+        this.wasItZero = wasItZero;
+    }
+
 
     @Override
     public int compareTo(Node o) {
@@ -22,6 +34,14 @@ public class Node implements Comparable <Node> {
             return (o.getX()+o.getY())-(this.getX()+this.getY());
         }
         else return this.getCost()-o.getCost();
+    }
+
+    public boolean isWasItZero() {
+        return wasItZero;
+    }
+
+    public void setWasItZero(boolean wasItZero) {
+        this.wasItZero = wasItZero;
     }
 
     public int getCost() {
