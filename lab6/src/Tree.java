@@ -13,10 +13,12 @@ public class Tree {
     }
 
     private void draw(Element root, Graph graph) {
+        graph.getNode(root.getId()).setAttribute("value", root.getKey());
         if (root.getChildren() != null) {
             for (Element child :
                     root.getChildren()) {
                 graph.addNode(child.getId());
+                graph.getNode(child.getId()).setAttribute("value", child.getKey());
                 graph.addEdge(root.getId() + "," + child.getId(), root.getId(), child.getId());
                 draw(child, graph);
             }
@@ -34,7 +36,7 @@ public class Tree {
         graph.addNode(root.getId());
         draw(root, graph);
         for (Node node : graph) {
-            node.setAttribute("ui.label", node.getId());
+            node.setAttribute("ui.label", node.getAttribute("value"));
         }
         graph.display();
     }

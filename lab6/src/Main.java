@@ -7,7 +7,7 @@ public class Main {
 
 
 
-        Tree tree1 = new Tree(2);
+        Tree tree1 = new Tree(1);
         Tree tree1_2 = new Tree(1);
         Tree tree2 = new Tree(0);
         Tree tree3 = new Tree (0);

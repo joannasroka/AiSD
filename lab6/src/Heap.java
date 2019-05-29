@@ -22,10 +22,16 @@ public class Heap {
         if (head == null) return;
         Tree head = this.head;
         Graph graph = new SingleGraph("Heap");
+        String lastID = null;
         while (head != null) {
        //     graph.addNode(head.getRoot().getId());
-            head.drawHeap(graph, head.getRoot().getId());
+            head.drawHeap(graph, lastID);
+            lastID = head.getRoot().getId();
             head = head.getNext();
+        }
+
+        for (Node node : graph) {
+            node.setAttribute("ui.label", node.getAttribute("value"));
         }
         graph.display();
     }
