@@ -28,8 +28,10 @@ public class Tree {
 
     public void drawHeap(Graph graph, String toJoinTo) {
         draw(graph);
-        if (toJoinTo != null)
-            graph.addEdge(toJoinTo + "," + root.getId(), toJoinTo, root.getId());
+        if (toJoinTo != null) {
+            Edge edge = graph.addEdge(toJoinTo + "," + root.getId(), toJoinTo, root.getId());
+            edge.addAttribute("ui.style", "fill-color: rgb(0,100,255);");
+        }
     }
 
     public void draw() {
