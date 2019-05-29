@@ -6,6 +6,8 @@ public class Element {
     private Element sibling;
     private ArrayList <Element> children;
     private int degree;
+    private static int nextId;
+    private String id = Integer.valueOf(nextId++).toString();
 
     public Element(int key) {
         this.key = key;
@@ -60,5 +62,9 @@ public class Element {
 
     public void setDegree(int degree) {
         this.degree = degree;
+    }
+
+    public String getId() {
+        return id;
     }
 }

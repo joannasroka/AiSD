@@ -1,3 +1,7 @@
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+
 import java.util.ArrayList;
 
 public class Tree {
@@ -8,13 +12,55 @@ public class Tree {
         this.root = element;
     }
 
-    public Tree(int degree) {
-        if (degree >= 0) {
-            Element element = new Element(-degree, degree, null);
-            this.root = element;
-
-        } else throw new IllegalArgumentException();
+    private void draw(Element root, Graph graph) {
+        if (root.getChildren() != null) {
+            for (Element child :
+                    root.getChildren()) {
+                graph.addNode(child.getId());
+                graph.addEdge(root.getId() + "," + child.getId(), root.getId(), child.getId());
+                draw(child, graph);
+            }
+        }
     }
+
+    public void drawHeap(Graph graph, String toJoinTo) {
+        draw(graph);
+        if (toJoinTo != null)
+            graph.addEdge(toJoinTo + "," + root.getId(), toJoinTo, root.getId());
+    }
+
+    public void draw() {
+        Graph graph = new SingleGraph("Tree");
+        graph.addNode(root.getId());
+        draw(root, graph);
+        for (Node node : graph) {
+            node.setAttribute("ui.label", node.getId());
+        }
+        graph.display();
+    }
+
+    public void draw(Graph graph) {
+        graph.addNode(root.getId());
+        draw(root, graph);
+    }
+
+    public Tree(int degree) {
+        if (degree == 0) {
+            this.root = new Element(0, 0, null);
+        } else {
+            Tree tree1 = new Tree(degree - 1);
+            tree1.getRoot().setKey(-degree + 1);
+            Tree tree2 = new Tree(degree - 1);
+            tree2.getRoot().setKey(-degree + 2);
+
+            tree1.merge(tree2);
+            this.root = tree1.root;
+
+
+        }
+
+    }
+
     public int getDegree() {
         if (root != null) return root.getDegree();
         else throw new NullPointerException();
@@ -42,7 +88,7 @@ public class Tree {
         if (isEmpty()) return;
         printList.add(root); // najpierw korzen potem dzieci
         while (!printList.isEmpty()) {
-           printList.addAll(printList.get(0).getChildren());
+            printList.addAll(printList.get(0).getChildren());
             System.out.println(printList.get(0).getKey());
             printList.remove(0);
         }

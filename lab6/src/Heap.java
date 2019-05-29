@@ -1,3 +1,7 @@
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+
 public class Heap {
     private Tree head;
     private int size;
@@ -12,6 +16,18 @@ public class Heap {
 
     public void clear() {
         head = null;
+    }
+
+    public void draw (){
+        if (head == null) return;
+        Tree head = this.head;
+        Graph graph = new SingleGraph("Heap");
+        while (head != null) {
+            graph.addNode(head.getRoot().getId());
+            head.drawHeap(graph, head.getRoot().getId());
+            head = head.getNext();
+        }
+        graph.display();
     }
 
     public void delete(int key) {
@@ -137,7 +153,7 @@ public class Heap {
                     //x.getRoot().getChildren().add(nextX.getRoot());
                     x.setNext(nextX.getNext());
                     nextX.setNext(null);
-                    nextX.getRoot().setSibling(x.getRoot().getChildren().get(0));
+                    //nextX.getRoot().setSibling(x.getRoot().getChildren().get(0));
                     x.merge(nextX);
                     x.getRoot().setDegree(x.getRoot().getDegree() + 1);
                 } else {
