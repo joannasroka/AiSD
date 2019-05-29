@@ -1,6 +1,8 @@
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.layout.HierarchicalLayout;
 
 public class Heap {
     private Tree head;
@@ -31,9 +33,10 @@ public class Heap {
         }
 
         for (Node node : graph) {
-            node.setAttribute("ui.label", node.getAttribute("value"));
+            node.setAttribute("ui.label", node.getAttribute("value").toString());
         }
-        graph.display();
+        Viewer viewer = graph.display(false);
+        viewer.enableAutoLayout(new HierarchicalLayout());
     }
 
     public void delete(int key) {

@@ -5,12 +5,10 @@ public class Main {
     public static void main(String[] args) {
 
 
-
-
-        Tree tree1 = new Tree(1);
-        Tree tree1_2 = new Tree(1);
+        Tree tree1 = new Tree(2);
+        Tree tree1_2 = new Tree(3);
         Tree tree2 = new Tree(0);
-        Tree tree3 = new Tree (0);
+        Tree tree3 = new Tree(0);
 
         //tree1.draw();
         //tree2.print();
@@ -24,12 +22,11 @@ public class Main {
 
         //System.out.println(heap1.minTree().getRoot().getKey());
         //heap1.print();
-        heap1.DecreaseKey(0,-4);
-
+        heap1.DecreaseKey(0, -4);
+        heap1.draw();
         //System.out.println(heap1.minTree().getRoot().getKey());
         //heap1.print();
         //System.out.println(heap1.size());
-
 
 
     }
