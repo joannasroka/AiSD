@@ -23,7 +23,7 @@ public class Heap {
         Tree head = this.head;
         Graph graph = new SingleGraph("Heap");
         while (head != null) {
-            graph.addNode(head.getRoot().getId());
+       //     graph.addNode(head.getRoot().getId());
             head.drawHeap(graph, head.getRoot().getId());
             head = head.getNext();
         }
