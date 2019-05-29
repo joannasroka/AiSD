@@ -25,8 +25,10 @@ public class Solution {
         int actualCost;
         nodeArray[0][0] = new Node(0, 0, A[0][0], getZeros(A[0][0]), null);
         if (nodeArray[0][0].getValue() == 0) nodeArray[0][0].setWasItZero(true);
+        availablePaths.add(nodeArray[0][0]);
 
-        while (x != A.length || y != A[0].length) {
+        while (x != A.length - 1 || y != A[0].length - 1) {
+            availablePaths.poll();
             if (x + 1 < A.length) {
                 if (nodeArray[x + 1][y] == null) {
 
@@ -51,6 +53,7 @@ public class Solution {
                         nodeArray[x + 1][y].setLastNode(nodeArray[x][y]);
 
                         if (nodeArray[x][y].isWasItZero()) nodeArray[x + 1][y].setWasItZero(true);
+                        if (actualCost == 0) nodeArray[x+1][y].setWasItZero(false);
 
                         availablePaths.add(nodeArray[x + 1][y]);
                     }
@@ -80,12 +83,12 @@ public class Solution {
                         nodeArray[x ][y+1].setLastNode(nodeArray[x][y]);
 
                         if (nodeArray[x][y].isWasItZero()) nodeArray[x][y+1].setWasItZero(true);
+                        if (actualCost == 0) nodeArray[x][y+1].setWasItZero(false);
 
                         availablePaths.add(nodeArray[x][y+1]);
                     }
                 }
             }
-            availablePaths.poll();
             x = availablePaths.peek().getX();
             y = availablePaths.peek().getY();
 
