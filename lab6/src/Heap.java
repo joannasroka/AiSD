@@ -164,17 +164,17 @@ public class Heap {
                     nextX.setNext(null);
                     //nextX.getRoot().setSibling(x.getRoot().getChildren().get(0));
                     x.merge(nextX);
-                    x.getRoot().setDegree(x.getRoot().getDegree() + 1);
+                    //x.getRoot().setDegree(x.getRoot().getDegree() + 1);
                 } else {
                     if (prevX == null) result.head = nextX;
                     else {
                         x.setNext(null);
                         prevX.setNext(nextX);
-                        x.getRoot().setSibling(nextX.getRoot().getChildren().get(0));
+                        //x.getRoot().setSibling(nextX.getRoot().getChildren().get(0));
                         //prevX.getRoot().setSibling(nextX.getRoot()); //??
                     }
                     nextX.merge(x);//?
-                    nextX.getRoot().setDegree(nextX.getRoot().getDegree() + 1);
+                    //nextX.getRoot().setDegree(nextX.getRoot().getDegree() + 1);
                     x = x.getNext();
                 }
             }
