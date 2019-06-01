@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class UndirectedEdge extends Edge {
+public class UndirectedEdge extends Edge implements Comparable<UndirectedEdge>{
 
     public UndirectedEdge(Node node1, Node node2, int weight) {
         this.node1 = node1;
@@ -43,5 +43,10 @@ public class UndirectedEdge extends Edge {
         if(node1.getId().equals(id)) return node2;
         if (node2.getId().equals(id)) return node1;
         return null;
+    }
+
+    @Override
+    public int compareTo(UndirectedEdge o) {
+        return this.weight - o.weight;
     }
 }

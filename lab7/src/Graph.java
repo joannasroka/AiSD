@@ -7,7 +7,7 @@ public class Graph {
 
     public void addNode(Node node) {
         if (node == null) throw new IllegalArgumentException("null value");
-        if (nodes.containsKey(node.getId())) throw new IllegalArgumentException("duplicate value");
+        if (nodes.containsKey(node.getId()))  return;
         nodes.put(node.getId(), node);
     }
 
@@ -37,6 +37,11 @@ public class Graph {
 
         if (isDirected) directedEdges.add(new DirectedEdge(node1, node2, weight));
         else undirectedEdges.add(new UndirectedEdge(node1, node2, weight));
+    }
+
+    public void addUndirectedEdge (UndirectedEdge edge){
+        if(edge==null) throw new IllegalArgumentException("edge is null");
+        addEdge(edge.getNode1(), edge.getNode2(), edge.getWeight(), false);
     }
 
     public void removeEdge(Node node1, Node node2) {
@@ -147,42 +152,41 @@ public class Graph {
         return result.toString();
     }
 
-    public Node findFirstUnvisited(Node actual, Set<Node> neighbours, Map<Node, Node> visited, Node source) throws CycleIsFoundException {
+    public Node findFirstUnvisited(Set<Node> neighbours, Set<Node> visited, Stack<Node> dfsStack) throws CycleIsFoundException {
         if (neighbours == null || visited == null) throw new IllegalArgumentException("null arguments");
         for (Node neighbour : neighbours) {
-            if (!visited.containsKey(neighbour)) {
+            if (!visited.contains(neighbour)) {
                 return neighbour;
-            } else if ((!(neighbour.equals(source)) && !actual.equals(visited.get(neighbour))) || neighbour.equals(actual))
+            } else if (dfsStack.contains(neighbour))
                 throw new CycleIsFoundException();
         }
         return null;
     }
 
-    public Node getSecondFromStack (Stack <Node> stack){
-        if(stack==null || stack.size()==1 || stack.isEmpty()) return null;
-        Node temp = stack.pop();
-        Node result = stack.peek();
-        stack.push(temp);
-        return result;
-    }
-
+    /*
+        public Node getSecondFromStack (Stack <Node> stack){
+            if(stack==null || stack.size()==1 || stack.isEmpty()) return null;
+            Node temp = stack.pop();
+            Node result = stack.peek();
+            stack.push(temp);
+            return result;
+        }
+    */
     public boolean findCycle() { // algorytm DFS
         if (nodes.isEmpty()) return false;
-        Map<Node, Node> visited = new HashMap<>();
+        Set<Node> visited = new HashSet<>();
         Stack<Node> stackDFS = new Stack<>();
         Node actualNode = nodes.values().iterator().next();// bierze ktorys element z nodes
-        Node source;
         Node unvisitedNode;
         stackDFS.push(actualNode);
 
         while (!stackDFS.isEmpty()) {
             actualNode = stackDFS.peek();
-            source = getSecondFromStack(stackDFS);
-            visited.put(actualNode, source);
+            visited.add(actualNode);
 
             Set<Node> neighbours = getNeighbours(actualNode.getId());
             try {
-                unvisitedNode = findFirstUnvisited(actualNode, neighbours, visited, source);
+                unvisitedNode = findFirstUnvisited(neighbours, visited, stackDFS);
                 if (unvisitedNode == null) stackDFS.pop();
                 else stackDFS.push(unvisitedNode);
 
@@ -192,6 +196,20 @@ public class Graph {
 
         }
         return false;
+
+    }
+
+    public Graph minimumSpannigTree() {
+        PriorityQueue<UndirectedEdge> edges = new PriorityQueue<>(undirectedEdges);
+        Graph result = new Graph();
+
+        for (UndirectedEdge edge : edges) {
+            result.addNode(edge.getNode1());
+            result.addNode(edge.getNode2());
+            result.addUndirectedEdge(edge);
+            if(result.findCycle()) result.removeEdge(edge.getNode1(),edge.getNode2());
+        }
+        return result;
 
     }
 
