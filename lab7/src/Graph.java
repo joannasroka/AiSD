@@ -7,7 +7,7 @@ public class Graph {
 
     public void addNode(Node node) {
         if (node == null) throw new IllegalArgumentException("null value");
-        if (nodes.containsKey(node.getId()))  return;
+        if (nodes.containsKey(node.getId())) return;
         nodes.put(node.getId(), node);
     }
 
@@ -39,8 +39,8 @@ public class Graph {
         else undirectedEdges.add(new UndirectedEdge(node1, node2, weight));
     }
 
-    public void addUndirectedEdge (UndirectedEdge edge){
-        if(edge==null) throw new IllegalArgumentException("edge is null");
+    public void addUndirectedEdge(UndirectedEdge edge) {
+        if (edge == null) throw new IllegalArgumentException("edge is null");
         addEdge(edge.getNode1(), edge.getNode2(), edge.getWeight(), false);
     }
 
@@ -157,26 +157,95 @@ public class Graph {
         for (Node neighbour : neighbours) {
             if (!visited.contains(neighbour)) {
                 return neighbour;
-            } else if (dfsStack.contains(neighbour))
+            } else if (dfsStack.contains(neighbour) && !neighbour.equals(getSecondFromStack(dfsStack)))
                 throw new CycleIsFoundException();
         }
         return null;
     }
 
-    /*
-        public Node getSecondFromStack (Stack <Node> stack){
-            if(stack==null || stack.size()==1 || stack.isEmpty()) return null;
-            Node temp = stack.pop();
-            Node result = stack.peek();
-            stack.push(temp);
-            return result;
+
+    public Node getSecondFromStack(Stack<Node> stack) {
+        if (stack == null || stack.size() == 1 || stack.isEmpty()) return null;
+        Node temp = stack.pop();
+        Node result = stack.peek();
+        stack.push(temp);
+        return result;
+    }
+
+    public boolean findDirectedCycle() {
+        if (nodes.isEmpty()) return false;
+        Map<Node, Character> coloredNodes = new HashMap<>();
+        for (Node node :
+                nodes.values()) {
+            coloredNodes.put(node, 'w');
         }
-    */
-    public boolean findCycle() { // algorytm DFS
+
+        for (Node node :
+                coloredNodes.keySet()) {
+            if (!coloredNodes.get(node).equals('w')) continue;
+            if (findDirectedCycle(node, coloredNodes)) return true;
+        }
+        return false;
+
+    }
+
+    private boolean findDirectedCycle(Node node, Map<Node, Character> coloredNodes) {
+        coloredNodes.replace(node, 'g'); // zamieniam kolor na szary ?
+        Set<Node> neighbours = getNeighbours(node.getId());
+        for (Node neighbour : neighbours) {
+            if (coloredNodes.get(neighbour).equals('b')) continue;
+            if (coloredNodes.get(neighbour).equals('g')) return true;
+            else if (findDirectedCycle(neighbour, coloredNodes)) return true;
+        }
+        coloredNodes.replace(node, 'b');
+        return false;
+    }
+
+    private PathNode getFromPriorityQueue(PathNode node, PriorityQueue<PathNode> queue) {
+        if (queue == null || queue.isEmpty()) return null;
+        for (PathNode pathNode : queue) {
+            if (pathNode.equals(node)) return pathNode;
+        }
+        return null;
+    }
+
+    Set <PathNode> dijkstra(Node begin) {
+        PriorityQueue<PathNode> queue = new PriorityQueue<>();
+        Set<PathNode> visited = new HashSet<>();
+
+        PathNode first = new PathNode(begin, 0, null);
+        queue.add(first);
+
+        while (!queue.isEmpty()) {
+            PathNode top = queue.poll();
+            visited.add(top);
+
+            for (Node neighbour : getNeighbours(top.getNode().getId())) {
+                PathNode actualPathNode = new PathNode(neighbour, top.getPathCost() + getEdge(top.getNode(), neighbour).getWeight(), top.getNode());
+                if (!visited.contains(actualPathNode)) {
+                    if (!queue.contains(actualPathNode)) queue.add(actualPathNode);
+                    else {
+                        PathNode old = getFromPriorityQueue(actualPathNode, queue);
+                        if (old.getPathCost() > actualPathNode.getPathCost()) {
+                            old.setPathCost(actualPathNode.getPathCost());
+                            old.setPrevious(top.getNode());
+                            queue.remove(old);
+                            queue.add(old);
+                        }
+                    }
+                }
+            }
+        }
+        return visited;
+
+
+    }
+
+    public boolean findUndirectedCycle(Node begin) { // algorytm DFS
         if (nodes.isEmpty()) return false;
         Set<Node> visited = new HashSet<>();
         Stack<Node> stackDFS = new Stack<>();
-        Node actualNode = nodes.values().iterator().next();// bierze ktorys element z nodes
+        Node actualNode = begin;
         Node unvisitedNode;
         stackDFS.push(actualNode);
 
@@ -207,7 +276,7 @@ public class Graph {
             result.addNode(edge.getNode1());
             result.addNode(edge.getNode2());
             result.addUndirectedEdge(edge);
-            if(result.findCycle()) result.removeEdge(edge.getNode1(),edge.getNode2());
+            if (result.findUndirectedCycle(edge.node1)) result.removeEdge(edge.getNode1(), edge.getNode2());
         }
         return result;
 
