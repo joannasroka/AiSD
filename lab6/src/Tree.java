@@ -39,7 +39,7 @@ public class Tree {
         graph.addNode(root.getId());
         draw(root, graph);
         for (Node node : graph) {
-            node.setAttribute("ui.label", node.getAttribute("value"));
+            node.setAttribute("ui.label", node.getAttribute("value").toString());
         }
         graph.display();
     }
