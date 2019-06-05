@@ -6,9 +6,9 @@ public class Main {
 
 
         Tree tree1 = new Tree(1);
-        Tree tree1_2 = new Tree(1);
+        Tree tree1_2 = new Tree(2);
         Tree tree2 = new Tree(3);
-        Tree tree3 = new Tree(0);
+        //Tree tree3 = new Tree(4);
 
         //tree1.draw();
         //tree2.print();
@@ -18,13 +18,14 @@ public class Main {
         heap1.insert(tree1);
         heap1.insert(tree1_2);
         heap1.insert(tree2);
+        //heap1.insert(tree3);
         heap1.draw();
         // heap1.insert(tree1_2);
 
         //System.out.println(heap1.minTree().getRoot().getKey());
         //heap1.print();
         heap1.DecreaseKey(0, -4);
-        //heap1.draw();
+        heap1.draw();
         //System.out.println(heap1.minTree().getRoot().getKey());
         //heap1.print();
         //System.out.println(heap1.size());

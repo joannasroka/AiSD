@@ -13,6 +13,12 @@ public class Solution {
         return zeros;
     }
 
+    private int cost (Node u, Node v, int[][] A) {
+        return getZeros(u.getValue() * v.getValue());
+    }
+
+
+
     public int solution(int[][] A) {
 
 
