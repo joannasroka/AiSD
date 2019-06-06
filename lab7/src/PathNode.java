@@ -4,9 +4,9 @@ import java.util.Objects;
 public class PathNode implements Comparable <PathNode> {
     private Node node;
     private int pathCost;
-    private Node previous;
+    private PathNode previous;
 
-    public PathNode(Node node, int pathCost, Node previous) {
+    public PathNode(Node node, int pathCost, PathNode previous) {
         this.node = node;
         this.pathCost = pathCost;
         this.previous = previous;
@@ -23,6 +23,10 @@ public class PathNode implements Comparable <PathNode> {
 
     public void setPathCost(int pathCost) {
         this.pathCost = pathCost;
+    }
+
+    public void setNode(Node node) {
+        this.node = node;
     }
 
     @Override
@@ -43,11 +47,31 @@ public class PathNode implements Comparable <PathNode> {
         return Objects.hash(node);
     }
 
-    public Node getPrevious() {
+    public PathNode getPrevious() {
         return previous;
     }
 
-    public void setPrevious(Node previous) {
+    public void setPrevious(PathNode previous) {
         this.previous = previous;
+    }
+
+    @Override
+    public String toString() {
+        return "PathNode{" +
+                "node=" + node +
+                ", pathCost=" + pathCost +
+                ", previous=" + previous +
+                '}';
+    }
+
+    public String print (){
+        String result = "PathNode{" +
+                "node=" + node +
+                ", pathCost=" + pathCost + ", path=";
+        while(previous!=null){
+            result+=previous;
+            previous=previous.getPrevious();
+        }
+        return result;
     }
 }

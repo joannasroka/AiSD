@@ -17,19 +17,19 @@ public class Main {
         graph.addNode(nodeD);
         graph.addNode(nodeE);
 
-        graph.addEdge(nodeA, nodeC, 10, false);
-        graph.addEdge(nodeA, nodeD, 8, false);
-        graph.addEdge(nodeA, nodeE, 15, false);
-        graph.addEdge(nodeD,nodeE,2,false);
-        graph.addEdge(nodeD,nodeB,7,false);
+        graph.addEdge(nodeA, nodeC, 10, true);
+        graph.addEdge(nodeA, nodeD, 8, true);
+        graph.addEdge(nodeA, nodeE, 15, true);
+        graph.addEdge(nodeD,nodeE,2,true);
+        graph.addEdge(nodeD,nodeB,7,true);
 
 
-        Set<PathNode> dijkstra = graph.dijkstra(nodeA);
+        graph.printDijkstra(nodeA);
         //System.out.println(graph.printNodes());
         //System.out.println(graph.getNeighbours("C"));
 
-        graph.changeNodeValue("A",69);
-        graph.changeEdgeWeight(nodeA,  nodeB, 69);
+        graph.changeNodeValue("A",99);
+
        // System.out.println(graph.printNodes());
         //System.out.println(graph.printEdges());
         System.out.println(graph.findDirectedCycle());

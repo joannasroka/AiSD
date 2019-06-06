@@ -190,7 +190,7 @@ public class Graph {
     }
 
     private boolean findDirectedCycle(Node node, Map<Node, Character> coloredNodes) {
-        coloredNodes.replace(node, 'g'); // zamieniam kolor na szary ?
+        coloredNodes.replace(node, 'g'); // zamieniam kolor na szary
         Set<Node> neighbours = getNeighbours(node.getId());
         for (Node neighbour : neighbours) {
             if (coloredNodes.get(neighbour).equals('b')) continue;
@@ -221,14 +221,14 @@ public class Graph {
             visited.add(top);
 
             for (Node neighbour : getNeighbours(top.getNode().getId())) {
-                PathNode actualPathNode = new PathNode(neighbour, top.getPathCost() + getEdge(top.getNode(), neighbour).getWeight(), top.getNode());
+                PathNode actualPathNode = new PathNode(neighbour, top.getPathCost() + getEdge(top.getNode(), neighbour).getWeight(), top);
                 if (!visited.contains(actualPathNode)) {
                     if (!queue.contains(actualPathNode)) queue.add(actualPathNode);
                     else {
                         PathNode old = getFromPriorityQueue(actualPathNode, queue);
                         if (old.getPathCost() > actualPathNode.getPathCost()) {
                             old.setPathCost(actualPathNode.getPathCost());
-                            old.setPrevious(top.getNode());
+                            old.setPrevious(top);
                             queue.remove(old);
                             queue.add(old);
                         }
@@ -239,6 +239,15 @@ public class Graph {
         return visited;
 
 
+    }
+
+    public void printDijkstra (Node begin){
+        Set <PathNode> result = new HashSet<>();
+        result = dijkstra(begin);
+        for (PathNode pathNode : result) {
+            System.out.println(pathNode.toString());
+            System.out.print("; ");
+        }
     }
 
     public boolean findUndirectedCycle(Node begin) { // algorytm DFS
